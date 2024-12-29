@@ -10,7 +10,7 @@ import { catofficeApiClient } from './clients/gql';
 
 import './styles/app.css';
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById('__app')!).render(
     <React.StrictMode>
         <ChakraProvider value={system}>
             <ApolloProvider client={catofficeApiClient}>
