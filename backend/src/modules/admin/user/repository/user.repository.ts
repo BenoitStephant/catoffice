@@ -194,7 +194,7 @@ export class UserRepository
         };
     }
 
-    async getUserByEmail(email: string, id?: string): Promise<UserForLogin> {
+    async getUserByEmail(email: string, id?: string): Promise<UserForLogin | null> {
         const user = await this.prisma.user.findUnique({
             where: { email, ...(id && { id: id }) },
             select: {
@@ -217,14 +217,7 @@ export class UserRepository
             },
         });
 
-        if (!user) {
-            throw new Error('User not found');
-        }
-
-        return {
-            ...user,
-            roleNames: user.rolesOnUser.map((role) => role.role.name),
-        };
+        return user ? { ...user, roleNames: user.rolesOnUser.map((role) => role.role.name) } : null;
     }
 
     async archiveUser(id: string, archiverId: string): Promise<boolean> {

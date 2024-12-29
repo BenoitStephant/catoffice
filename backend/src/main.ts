@@ -2,7 +2,7 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
-import { ChatmaxModule } from './chatmax.module';
+import { CatofficeModule } from './catoffice.module';
 
 async function bootstrap() {
     const fastifyAdapter = new FastifyAdapter({});
@@ -16,7 +16,7 @@ async function bootstrap() {
         allowedHeaders: corsOrigin,
     });
 
-    const app = await NestFactory.create<NestFastifyApplication>(ChatmaxModule, fastifyAdapter);
+    const app = await NestFactory.create<NestFastifyApplication>(CatofficeModule, fastifyAdapter);
 
     app.setGlobalPrefix('api');
     app.useGlobalPipes(new ValidationPipe({}));

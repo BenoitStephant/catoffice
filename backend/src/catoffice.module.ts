@@ -36,4 +36,4 @@ import { HealthModule } from './modules/health';
         },
     ],
 })
-export class ChatmaxModule {}
+export class CatofficeModule {}
