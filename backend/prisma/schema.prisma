@@ -1,0 +1,115 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id String @id @default(dbgenerated("gen_random_uuid()"))
+
+    email    String @unique
+    password String
+
+    firstName String @map("first_name")
+    lastName  String @map("last_name")
+
+    creatorId String? @map("creator_id")
+    creator   User?   @relation("creator", fields: [creatorId], references: [id], onDelete: SetNull)
+    editorId  String? @map("editor_id")
+    editor    User?   @relation("editor", fields: [editorId], references: [id], onDelete: SetNull)
+
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+    createdUser User[] @relation("creator")
+    editedUser  User[] @relation("editor")
+
+    roleCreated Role[] @relation("creator")
+    roleEdited  Role[] @relation("editor")
+
+    rolesOnUser           RoleOnUser[]
+    rolesAssigned         RoleOnUser[]             @relation("assignedBy")
+    rolesUnassigned       RoleOnUser[]             @relation("unassignedBy")
+    archivationHistory    UserArchivationHistory[] @relation("user")
+    userArchivedHistory   UserArchivationHistory[] @relation("archiver")
+    userUnarchivedHistory UserArchivationHistory[] @relation("unarchiver")
+    RefreshToken          RefreshToken[]
+
+    @@map("user")
+}
+
+model UserArchivationHistory {
+    id String @id @default(dbgenerated("gen_random_uuid()"))
+
+    userId String @map("user_id")
+
+    archiverId String   @map("archiver_id")
+    archivedAt DateTime @default(now()) @map("archived_at")
+
+    unarchiverId String?   @map("unarchiver_id")
+    unarchivedAt DateTime? @map("unarchived_at")
+
+    user       User  @relation("user", fields: [userId], references: [id])
+    archiver   User  @relation("archiver", fields: [archiverId], references: [id])
+    unarchiver User? @relation("unarchiver", fields: [unarchiverId], references: [id])
+
+    @@map("user_archivation_history")
+}
+
+model RoleOnUser {
+    userId String @map("user_id")
+    roleId String @map("role_id")
+
+    user User @relation(fields: [userId], references: [id])
+    role Role @relation(fields: [roleId], references: [id])
+
+    assignedAt     DateTime @default(now()) @map("assigned_at")
+    assignedBy     String?  @map("assigned_by")
+    assignedByUser User?    @relation("assignedBy", fields: [assignedBy], references: [id])
+
+    unassignedAt     DateTime? @map("unassignedAt")
+    unassignedBy     String?   @map("unassignedBy")
+    unassignedByUser User?     @relation("unassignedBy", fields: [unassignedBy], references: [id])
+
+    @@id([userId, roleId])
+    @@map("role_on_user")
+}
+
+model Role {
+    id String @id @default(dbgenerated("gen_random_uuid()"))
+
+    name String @unique
+
+    creatorId String? @map("creator_id")
+    creator   User?   @relation("creator", fields: [creatorId], references: [id])
+    editorId  String? @map("editor_id")
+    editor    User?   @relation("editor", fields: [editorId], references: [id])
+
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+    userOnRole RoleOnUser[]
+
+    @@map("role")
+}
+
+model RefreshToken {
+    id String @id @default(dbgenerated("gen_random_uuid()"))
+
+    userId String @map("user_id")
+    user   User   @relation(fields: [userId], references: [id])
+
+    token String @unique
+
+    isRevoked Boolean @default(false) @map("is_revoked")
+
+    expiresAt DateTime @map("expires_at")
+
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+    @@map("refresh_token")
+}

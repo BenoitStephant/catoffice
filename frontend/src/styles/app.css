@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'heebo';
+    src: url('@/assets/fonts/heebo.woff2') format('woff2');
+}
+
+html,
+body {
+    font-family: 'heebo';
+}
