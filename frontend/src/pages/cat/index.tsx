@@ -2,17 +2,17 @@ import React from 'react';
 
 import Layout from '../../layout';
 
-const Home: React.FC = () => {
+const Cat: React.FC = () => {
     return (
         <Layout
             page={{
-                name: 'home',
-                title: 'Accueil',
+                name: 'cat',
+                title: 'Chats',
             }}
         >
-            <>Bienvenue sur Catoffice</>
+            <>Chats</>
         </Layout>
     );
 };
 
-export default Home;
+export default Cat;

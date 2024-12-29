@@ -1,0 +1,46 @@
+#__app .layout {
+    min-height: 100vh;
+}
+
+.screen[data-layout='plain'] {
+    .main-content {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+}
+
+.screen[data-layout='app'] {
+    .layout {
+        background-color: #fcfcfd;
+        padding-left: var(--c-size-sidebar-width);
+
+        @media (max-width: 1024px) {
+            padding-left: 0;
+        }
+    }
+
+    .main-content {
+        padding: 16px;
+    }
+
+    .topbar {
+        align-items: center;
+        background-color: #fff;
+        border-bottom: 1px solid #d8dee4;
+        box-shadow: #0c0c0c0d 0 1px 5px;
+        display: flex;
+        justify-content: space-between;
+        padding: 16px;
+
+        .topbar__title {
+            color: var(--c-color-heading);
+            display: block;
+            font-size: 18px;
+            font-weight: var(--c-font-weight-bold);
+        }
+    }
+}

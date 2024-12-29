@@ -1,0 +1,16 @@
+.user-nav {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    width: var(--c-size-sidebar-width);
+}
+
+.user-nav-menu {
+    width: calc(var(--c-size-sidebar-width) - 20px);
+
+    .user-nav-menu-item {
+        cursor: pointer;
+    }
+}

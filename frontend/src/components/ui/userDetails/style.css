@@ -1,0 +1,16 @@
+.user-details {
+    display: flex;
+    gap: 16px;
+}
+
+.user-details__meta {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.user-details__meta span:first-child {
+    font-weight: var(--c-font-weight-medium);
+    color: var(--c-color-heading);
+}

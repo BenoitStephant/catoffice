@@ -1,0 +1,16 @@
+:root {
+    --c-color-primary: #002999;
+    --c-color-secondary: #00386b;
+    --c-color-tertiary: #3b5394;
+    --c-color-text: #36434a;
+    --c-color-heading: #0f1828;
+    --c-color-danger: #c9372c;
+
+    --c-font-weight-base: 400;
+    --c-font-weight-normal: 400;
+    --c-font-weight-medium: 500;
+    --c-font-weight-semibold: 600;
+    --c-font-weight-bold: 700;
+
+    --c-size-sidebar-width: 250px;
+}
