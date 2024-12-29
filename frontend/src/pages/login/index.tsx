@@ -13,6 +13,7 @@ import { loginMutation } from '../../clients/gql/auth';
 import { toaster } from '../../components/ui/toaster';
 import { login } from '../../store/auth';
 import { User } from '../../types/user';
+import { useNavigate } from 'react-router';
 
 const loginFormSchema = z.object({
     email: z.string().email('Veuillez rentrer une adresse email valide'),
@@ -29,6 +30,7 @@ const Login: React.FC = () => {
         resolver: zodResolver(loginFormSchema),
     });
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [startLogin, { loading }] = useMutation(loginMutation, {
         onError: (error) => {
             if (error.message === 'BAD_CREDENTIALS') {
@@ -53,7 +55,8 @@ const Login: React.FC = () => {
             };
 
             if (!accessToken || !accessTokenExpiresAt || !refreshToken || !refreshTokenExpiresAt || !user) {
-                throw new Error('Invalid response');
+                console.error('Invalid response');
+                return;
             }
 
             dispatch(
@@ -65,6 +68,7 @@ const Login: React.FC = () => {
                     user,
                 }),
             );
+            navigate('/');
         },
     });
     const onSubmit: SubmitHandler<LoginFormSchema> = (data) => {

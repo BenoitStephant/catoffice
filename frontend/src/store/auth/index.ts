@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { jwtDecode } from 'jwt-decode';
 
-import { readCookie, setCookie } from '../../libs/cookie';
+import { deleteCookie, readCookie, setCookie } from '../../libs/cookie';
 import { User } from '../../types/user';
 import { ACCESS_TOKEN_STORAGE_KEY, REFRESH_TOKEN_STORAGE_KEY, USER_STORAGE_KEY } from './storage-key.constant';
 
@@ -49,6 +49,16 @@ const auth = createSlice({
             setCookie(ACCESS_TOKEN_STORAGE_KEY, accessToken, accessTokenExpiresAt);
             setCookie(REFRESH_TOKEN_STORAGE_KEY, refreshToken, refreshTokenExpiresAt);
             setCookie(USER_STORAGE_KEY, JSON.stringify(user), accessTokenExpiresAt);
+        },
+        logout: (state) => {
+            state.isAuthenticated = false;
+            state.accessToken = null;
+            state.refreshToken = null;
+            state.user = null;
+
+            deleteCookie(ACCESS_TOKEN_STORAGE_KEY);
+            deleteCookie(REFRESH_TOKEN_STORAGE_KEY);
+            deleteCookie(USER_STORAGE_KEY);
         },
     },
 });
