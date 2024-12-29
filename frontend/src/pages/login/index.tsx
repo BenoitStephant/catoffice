@@ -1,6 +1,7 @@
 import React from 'react';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useDispatch } from 'react-redux';
 
 import './style.css';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -10,6 +11,8 @@ import { Button } from '../../components/ui/button';
 import { useMutation } from '@apollo/client';
 import { loginMutation } from '../../clients/gql/auth';
 import { toaster } from '../../components/ui/toaster';
+import { login } from '../../store/auth';
+import { User } from '../../types/user';
 
 const loginFormSchema = z.object({
     email: z.string().email('Veuillez rentrer une adresse email valide'),
@@ -25,7 +28,8 @@ const Login: React.FC = () => {
     } = useForm<LoginFormSchema>({
         resolver: zodResolver(loginFormSchema),
     });
-    const [login, { loading }] = useMutation(loginMutation, {
+    const dispatch = useDispatch();
+    const [startLogin, { loading }] = useMutation(loginMutation, {
         onError: (error) => {
             if (error.message === 'BAD_CREDENTIALS') {
                 toaster.error({
@@ -35,10 +39,36 @@ const Login: React.FC = () => {
                 return;
             }
         },
+        onCompleted: (data) => {
+            const {
+                token: { accessToken, accessTokenExpiresAt, refreshToken, refreshTokenExpiresAt },
+                ...rest
+            } = data.login;
+            const user: User = {
+                id: rest.id,
+                email: rest.email,
+                firstName: rest.firstName,
+                lastName: rest.lastName,
+                roleNames: rest.roles,
+            };
+
+            if (!accessToken || !accessTokenExpiresAt || !refreshToken || !refreshTokenExpiresAt || !user) {
+                throw new Error('Invalid response');
+            }
+
+            dispatch(
+                login({
+                    accessToken,
+                    accessTokenExpiresAt,
+                    refreshToken,
+                    refreshTokenExpiresAt,
+                    user,
+                }),
+            );
+        },
     });
     const onSubmit: SubmitHandler<LoginFormSchema> = (data) => {
-        console.log('start login');
-        login({
+        startLogin({
             variables: data,
         });
     };

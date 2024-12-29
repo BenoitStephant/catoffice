@@ -1,17 +1,17 @@
 services:
-    database:
-        container_name: chatmax-database
-        image: postgres:alpine
-        environment:
-            POSTGRES_USER: $POSTGRES_USER
-            POSTGRES_PASSWORD: $POSTGRES_PASSWORD
-            POSTGRES_DB: $POSTGRES_DB
-            PGDATA: /var/lib/postgresql/data/pgdata
-        ports:
-            - 5432:5432
-        volumes:
-            - postgres:/var/lib/postgresql/data
-        restart: always
+  database:
+    container_name: catoffice-database
+    image: postgres:alpine
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_DB: $POSTGRES_DB
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    restart: always
 
 volumes:
-    postgres:
+  postgres:
