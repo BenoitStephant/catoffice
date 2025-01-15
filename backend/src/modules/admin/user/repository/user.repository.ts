@@ -162,6 +162,10 @@ export class UserRepository
             },
         });
 
+        if (!user) {
+            return null;
+        }
+
         return {
             ...user,
             archivedAt: user.archivationHistory[0]?.archivedAt,

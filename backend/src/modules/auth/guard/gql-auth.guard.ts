@@ -30,8 +30,8 @@ export class GqlAuthGuard implements CanActivate {
         }
 
         const token = tokenWithBearer?.split(' ')[1];
-        const jwtSecret = this.configService.get<string>('JWT_SECRET');
-        const user = this.jwtService.verify(token, { secret: jwtSecret });
+        const jwtAccessTokenSecret = this.configService.get<string>('JWT_ACCESS_TOKEN_SECRET');
+        const user = this.jwtService.verify(token, { secret: jwtAccessTokenSecret });
 
         if (!user) {
             throw new UnauthorizedException();
